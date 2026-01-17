@@ -24,8 +24,27 @@ def create_roles():
 def create_users():
     ...
 
+```
+
+### Example CLI Usage
+```
+bootseq plan
+bootseq run --tags auth
+bootseq run --only auth.create_roles
+bootseq run --skip billing.*
+bootseq run --dry-run
 
 ```
+
+
+## Installing 
+
+```
+pip install git+https://github.com/Ngahu/bootseq.git#egg=bootseq
+
+
+```
+
 
 
 ```
