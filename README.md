@@ -1,30 +1,84 @@
+
+
 # bootseq
 
-**bootseq** is a deterministic bootstrap task sequencing engine.
+**bootseq** is a deterministic bootstrap sequencing engine for Python projects.
 
-## Why bootseq?
+It allows you to define bootstrap tasks across many modules or packages and run them:
+- In a predictable order
+- With explicit dependencies
+- With optional parallel execution
+- With rollback support
+- Via CLI or Python API
 
-- Declarative task registration
-- Dependency-aware execution
-- Parallel execution where safe
-- Rollback on failure
-- CLI + Python API
-- Django-friendly, framework-agnostic
+
+
+## Install
+
+```bash
+pip install git+https://github.com/Ngahu/bootseq.git#egg=bootseq
+
+```
+
 
 ## Usage
 
+
+Defining Bootstrap Tasks.
+Tasks are defined using the `@register` decorator.
+
+
+
+Minimal Example (no parameters)
 ```python
 from bootseq import register
 
-@register()
+
+@register
+def setup_environment():
+    print("Setting up environment")
+
+```
+
+This registers a task with:
+
+- Name: `<module>.setup_environment`
+- Default order
+- No dependencies
+
+
+Using Parameters
+
+```
+@register(
+    order=10,
+    tags={"core"},
+)
+def create_config():
+    ...
+    
+```
+
+Dependencies Between Tasks
+
+```
+@register
 def create_roles():
     ...
 
-@register(requires={"myapp.create_roles"})
+@register(requires={"auth.create_roles"})
 def create_users():
     ...
 
 ```
+
+Dependencies are:
+
+- Explicit
+
+- String-based
+
+- Fully qualified (namespace.task_name)
 
 ### Example CLI Usage
 ```
@@ -36,14 +90,6 @@ bootseq run --dry-run
 
 ```
 
-
-## Installing 
-
-```
-pip install git+https://github.com/Ngahu/bootseq.git#egg=bootseq
-
-
-```
 
 
 
