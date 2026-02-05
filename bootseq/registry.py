@@ -14,7 +14,7 @@ class Registry:
             return lambda real_fn: self.register(real_fn, **kwargs)
 
         # Case: @register
-        module = fn.__module__.split(".")[-1]
+        module = fn.__module__
         namespace = kwargs.pop("namespace", module)
         name = kwargs.pop("name", fn.__name__)
 
